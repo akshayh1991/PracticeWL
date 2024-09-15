@@ -30,6 +30,9 @@ builder.Services.AddScoped<IRoleDAL, Role>();
 
 builder.Services.AddScoped<IUserBL, UserBL>();
 builder.Services.AddScoped<IUserDAL, User>();
+
+builder.Services.AddScoped<IPasswordBL, PasswordBL>();
+builder.Services.AddScoped<IPasswordDAL, Password>();
 builder.Services.AddScoped<IEncryptionDecryption, EncryptionDecryption>();
 builder.Services.AddSwaggerGen(c =>
 {

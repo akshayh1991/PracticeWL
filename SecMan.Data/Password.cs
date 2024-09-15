@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SecMan.Interfaces.DAL;
+using System.Security.Policy;
 using static SecMan.Model.User;
 
 namespace SecMan.Data
@@ -7,7 +8,7 @@ namespace SecMan.Data
     public class Password : IPasswordDAL
     {
 
-        public async Task<string> UpdatePasswordAsync1(ulong userId, string newPassword)
+        public async Task<string> UpdatePasswordAsync(ulong userId, string newPassword)
         {
             using var db = new SQLCipher.Db();
             var user = await db.Users.FindAsync(userId);
@@ -21,7 +22,7 @@ namespace SecMan.Data
         }
 
 
-        public async Task<ulong> CheckForExistingUser1(string oldPassword)
+        public async Task<ulong> CheckForExistingUser(string oldPassword)
         {
             using var db = new SQLCipher.Db();
             var trimmedOldPassword = oldPassword.Trim();
@@ -34,6 +35,9 @@ namespace SecMan.Data
             }
             return 0;
         }
+
+
+
 
     }
 }

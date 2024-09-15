@@ -5,7 +5,7 @@ namespace SecMan.Interfaces.DAL
 {
     public  interface IPasswordDAL
     {
-        Task<ulong> CheckForExistingUser1(string oldPassword);
-        Task<string> UpdatePasswordAsync1(ulong userId, string newPassword);
+        Task<ulong> CheckForExistingUser(string oldPassword);
+        Task<string> UpdatePasswordAsync(ulong userId, string newPassword);
     }
 }

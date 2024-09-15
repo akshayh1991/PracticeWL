@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SecMan.Model;
+using static SecMan.Model.User;
 
 namespace SecMan.Interfaces.DAL
 {
     public  interface IPasswordDAL
     {
-        Task<string> UpdatePasswordAsync(string oldPassword,string newPassword);
+        Task<ulong> CheckForExistingUser1(string oldPassword);
+        Task<string> UpdatePasswordAsync1(ulong userId, string newPassword);
     }
 }

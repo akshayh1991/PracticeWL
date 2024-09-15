@@ -1,20 +1,39 @@
-﻿using SecMan.Interfaces.DAL;
+﻿using Microsoft.EntityFrameworkCore;
+using SecMan.Interfaces.DAL;
+using static SecMan.Model.User;
 
 namespace SecMan.Data
 {
     public class Password : IPasswordDAL
     {
-        public async Task<string> UpdatePasswordAsync(string oldPassword, string newPassword)
+
+        public async Task<string> UpdatePasswordAsync1(ulong userId, string newPassword)
         {
             using var db = new SQLCipher.Db();
-            var user = new SecMan.Data.SQLCipher.User
+            var user = await db.Users.FindAsync(userId);
+            if (user == null)
             {
-                Id=6,
-                Password = newPassword
-            };
-            db.Update(user);
-            db.SaveChanges();
+                throw new Exception("User not found.");
+            }
+            user.Password = newPassword;
+            await db.SaveChangesAsync();
             return user.Password;
         }
+
+
+        public async Task<ulong> CheckForExistingUser1(string oldPassword)
+        {
+            using var db = new SQLCipher.Db();
+            var trimmedOldPassword = oldPassword.Trim();
+
+            var existingUser = await db.Users
+                .FirstOrDefaultAsync(x => x.Password == trimmedOldPassword);
+            if (existingUser != null)
+            {
+                return existingUser.Id;
+            }
+            return 0;
+        }
+
     }
 }

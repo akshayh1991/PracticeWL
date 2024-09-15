@@ -1,0 +1,312 @@
+{
+	"Type":"DefConf",
+	"Name":"",
+	"Vers":1,
+	"Zones": ["Z1", "Z2"],
+	"Devs": [
+		{"Name":"User Access Manager", "DevDef":"SecMan", "Zone":"Z1"},		
+		{"Name":"Reviewer", "DevDef":"Reviewer", "Zone":"Z1"},		
+		{"Name":"ERPM", "DevDef":"ERPM", "Zone":"Z1"},		
+		{"Name":"EPM01", "DevDef":"EPM", "Zone":"Z2"},		
+		{"Name":"EPM02", "DevDef":"EPM", "Zone":"Z2"},
+		{"Name":"EPM03", "DevDef":"EPM", "Zone":"Z2"}
+	],
+	"Roles": [
+		{"Name":"Administrator", "Zones": ["Z1", "Z2"]},
+		{"Name":"Quality", "Zones": ["Z1", "Z2"]},
+		{"Name":"Operator","Zones": ["Z1", "Z2"]}
+	],
+	"Users": [
+		{"Domain":"", "UserName":"Admin01", "Password":"Admin01", "Roles": ["Administrator"]},
+		{"Domain":"", "UserName":"Qual01", "Password":"Qual01", "Roles": ["Quality", "Operator"]},
+		{"Domain":"", "UserName":"Oper01", "Password":"Oper01", "Roles": ["Operator"]},
+		{"Domain":"", "UserName":"Oper02", "Password":"Oper02", "Roles": ["Operator"]},
+		{"Domain":"", "UserName":"Oper03", "Password":"Oper03", "Roles": ["Operator"]}
+	],
+	"DevPols": [
+		{
+			"Zone": "Z1",
+			"DevDef": "SecMan",
+			"Pols": []
+		},
+		{
+			"Zone": "Z1",
+			"DevDef": "Reviewer",
+			"Pols": [
+				{"Name": "Allow multiple sessions per user", "Val": "true"}
+			]
+		},
+		{
+			"Zone": "Z1",
+			"DevDef": "ERPM",
+			"Pols": []
+		},
+		{
+			"Zone": "Z2",
+			"DevDef": "EPM",
+			"Pols": [
+				{"Name": "RECORD LOGINS", "Val": "true"},
+				{"Name": "ENABLE AUDIT TRAIL", "Val": "false"}
+			]
+		}
+	],
+	"DevSigs": [
+		{
+			"Zone": "Z1",
+			"DevDef": "SecMan",
+			"Sigs": [
+				{"Perm":"CAN_EDIT_SYSTEM_FEATURES", "Sign": true, "Auth": false, "Note": false},
+				{"Perm":"CAN_EDIT_SECURITY", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_EDIT_ALL_PASSWORDS", "Sign": false, "Auth": false, "Note": false}
+			]
+		},
+		{
+			"Zone": "Z1",
+			"DevDef": "Reviewer",
+			"Sigs": [
+				{"Perm":"Manage user accounts", "Sign": true, "Auth": false, "Note": false},
+				{"Perm":"Manage user sessions", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Manage roles", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Manage server configuration", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Access management", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Manage Active Directory", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Manage user views", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Mange point properties", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Manage data sources", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Manage database", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Manage custom groups", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Edit group settings", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Manage settings", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Annotate", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Approve", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Review", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Release", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Fail", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Acknowledge notifications", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Access history / download UHH files", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"View database details", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Export to CSV", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Print", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Enable/Disable custom groups", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Manage print details", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Import UHH files manually", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"View and print event log", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"View and print channel details", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Manage scheduled reports", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Manage Syslog", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"Manage OPC UA", "Sign": false, "Auth": false, "Note": false}
+			]
+		},
+		{
+			"Zone": "Z1",
+			"DevDef": "ERPM",
+			"Sigs": [
+				{"Perm":"CAN_01", "Sign": true, "Auth": false, "Note": false},
+				{"Perm":"CAN_02", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_03", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_04", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_05", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_06", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_07", "Sign": false, "Auth": false, "Note": false}
+			]
+		},
+		{
+			"Zone": "Z2",
+			"DevDef": "EPM",
+			"Sigs": [
+				{"Perm":"CAN_ACCESS_WEBSERVER", "Sign": true, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACKNOWLEDGE_ALARMS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_SUPPRESS_ALARMS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_SHELVE_ALARMS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACTION_DEMAND_WRITES", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ADJUST_IO", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ARCHIVE", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ANNOTATE_NOTE", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ANNOTATE_APPROVE", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ANNOTATE_FAIL", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ANNOTATE_RELEASE", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ANNOTATE_REVIEW", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_BATCH_CONTROL", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_BATCH_CONTROL_START", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_BATCH_CONTROL_STOP", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_BATCH_CONTROL_PAUSE", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_BATCH_CONTROL_RESUME", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_CONFIGURE", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_CONFIGURE_OUTPUT_DEFAULTS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_EDIT_ALARM_SETPOINTS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_EDIT_MATH_CONSTANTS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_EDIT_OWN_PASSWORD", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ENTER_BATCH_DATA", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_INVOKE_LEVEL1_EVENTS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_INVOKE_LEVEL2_EVENTS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_INVOKE_LEVEL3_EVENTS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_PASTE_DELETE_FILES", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_PRESET_COUNTERS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_RESET_COUNTERS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_PRESET_TOTALISERS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_RESET_MATHS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_SAVE_RESTORE", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_SET_CLOCK", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_RESET_TIMERS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_START_TIMERS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_UPGRADE", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACCESS_PAGE_BATCH_SUMMARY", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACCESS_PAGE_EMAIL_CONFIGURATION", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACCESS_PAGE_GROUPS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACCESS_PAGE_BATCH_HISTORY", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACCESS_PAGE_GROUP", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACCESS_PAGE_MATH_CHANNELS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACCESS_PAGE_IO_CHANNELS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACCESS_PAGE_TEST_CHANNELS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACCESS_PAGE_GROUP_MESSAGES", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACCESS_PAGE_COUNTER_CHANNELS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACCESS_PAGE_TOTALISER_CHANNELS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACCESS_PAGE_TIMER_CHANNELS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACCESS_PAGE_SECURITY", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACCESS_PAGE_GROUP_MESSAGES", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACCESS_PAGE_JOBS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACCESS_PAGE_MESSAGE_TEMPLATES", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACCESS_PAGE_ALARM_SUMMARY", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_TIMER_HOLD", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_TOTALISER_HOLD", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_COUNTER_HOLD", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_EDIT_OWN_PASSWORD", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_EDIT_ALL_PASSWORDS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_MASK_ALARMS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACCESS_PAGE_ALARM_HISTORY", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACCESS_PAGE_DEVICE_SETTINGS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_EDIT_DEVICE_SETTINGS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACCESS_PAGE_CHANNELS", "Sign": false, "Auth": false, "Note": false},
+				{"Perm":"CAN_ACCESS_PAGE_SHELVED_ALARMS", "Sign": false, "Auth": false, "Note": false}
+			]
+		}
+	],
+	"DevPerms": [
+		{
+			"Zone": "Z1",
+			"DevDef": "SecMan",
+			"Role": "Administrator",
+			"Perms": ["CAN_EDIT_SYSTEM_FEATURES", "CAN_EDIT_COMMON_SYSTEM_FEATURES", "CAN_EDIT_SECURITY", "CAN_EDIT_OWN_PASSWORD", "CAN_EDIT_ALL_PASSWORDS", "CAN_SIGN", "CAN_AUTHORIZE", "CAN_NOTE"]
+		},
+		{
+			"Zone": "Z1",
+			"DevDef": "SecMan",
+			"Role": "Quality",
+			"Perms": ["CAN_EDIT_OWN_PASSWORD"]
+		},
+		{
+			"Zone": "Z1",
+			"DevDef": "SecMan",
+			"Role": "Operator",
+			"Perms": ["CAN_EDIT_OWN_PASSWORD"]
+		},
+		{
+			"Zone": "Z1",
+			"DevDef": "Reviewer",
+			"Role": "Administrator",
+			"Perms": [
+				"Manage user accounts", "Manage user sessions", "Manage roles",
+				"Manage server configuration", "Access management", "Manage Active Directory",
+				"Manage user views", "Mange point properties", "Manage data sources",
+				"Manage database", "Manage custom groups", "Edit group settings",
+				"Manage settings", "Annotate", "Approve", "Review", "Release", "Fail",
+				"Acknowledge notifications", "Access history / download UHH files",
+				"View database details", "Export to CSV", "Print", "Can sign", "Can authorize",
+				"Enable/Disable custom groups", "Manage print details", "Import UHH files manually",
+				"View and print event log", "View and print channel details",
+				"Manage scheduled reports", "Manage Syslog", "Manage OPC UA"]
+		},
+		{
+			"Zone": "Z1",
+			"DevDef": "Reviewer",
+			"Role": "Quality",
+			"Perms": [
+				"Approve", "Review", "Release", "Fail"]
+		},
+		{
+			"Zone": "Z1",
+			"DevDef": "Reviewer",
+			"Role": "Operator",
+			"Perms": [
+				"Manage user views", "Mange point properties", "Manage custom groups",
+				"Edit group settings", "Annotate", "Acknowledge notifications", "Access history / download UHH files",
+				"Export to CSV", "Print", "Can sign", "Can authorize",
+				"Enable/Disable custom groups", "Manage print details", "Import UHH files manually",
+				"View and print event log", "View and print channel details",
+				"Manage scheduled reports"]
+		},
+		{
+			"Zone": "Z1",
+			"DevDef": "ERPM",
+			"Role": "Administrator",
+			"Perms": [ "CAN_01", "CAN_02", "CAN_03", "CAN_04", "CAN_05", "CAN_06", "CAN_07" ]
+		},
+		{
+			"Zone": "Z1",
+			"DevDef": "ERPM",
+			"Role": "Quality",
+			"Perms": [ "CAN_01", "CAN_02", "CAN_03", "CAN_04" ]
+		},
+		{
+			"Zone": "Z1",
+			"DevDef": "ERPM",
+			"Role": "Operator",
+			"Perms": [ "CAN_04", "CAN_05", "CAN_06", "CAN_07" ]
+		},
+		{
+			"Zone": "Z2",
+			"DevDef": "EPM",
+			"Role": "Administrator",
+			"Perms": [
+				"CAN_ACCESS_WEBSERVER", "CAN_ACKNOWLEDGE_ALARMS", "CAN_SUPPRESS_ALARMS", "CAN_SHELVE_ALARMS",
+				"CAN_ACTION_DEMAND_WRITES", "CAN_ADJUST_IO", "CAN_ARCHIVE", "CAN_NOTE", "CAN_ANNOTATE_NOTE",
+				"CAN_ANNOTATE_APPROVE", "CAN_ANNOTATE_FAIL", "CAN_ANNOTATE_RELEASE", "CAN_ANNOTATE_REVIEW",
+				"CAN_AUTHORIZE", "CAN_BATCH_CONTROL", "CAN_BATCH_CONTROL_START", "CAN_BATCH_CONTROL_STOP",
+				"CAN_BATCH_CONTROL_PAUSE", "CAN_BATCH_CONTROL_RESUME", "CAN_CONFIGURE", "CAN_CONFIGURE_OUTPUT_DEFAULTS",
+				"CAN_EDIT_ALARM_SETPOINTS", "CAN_EDIT_MATH_CONSTANTS", "CAN_EDIT_OWN_PASSWORD", "CAN_ENTER_BATCH_DATA",
+				"CAN_INVOKE_LEVEL1_EVENTS", "CAN_INVOKE_LEVEL2_EVENTS", "CAN_INVOKE_LEVEL3_EVENTS", "CAN_PASTE_DELETE_FILES",
+				"CAN_PRESET_COUNTERS", "CAN_RESET_COUNTERS", "CAN_PRESET_TOTALISERS", "CAN_RESET_MATHS",
+				"CAN_SAVE_RESTORE", "CAN_SET_CLOCK", "CAN_SIGN", "CAN_RESET_TIMERS", "CAN_START_TIMERS",
+				"CAN_UPGRADE", "CAN_ACCESS_PAGE_BATCH_SUMMARY", "CAN_ACCESS_PAGE_EMAIL_CONFIGURATION", "CAN_ACCESS_PAGE_GROUPS",
+				"CAN_ACCESS_PAGE_BATCH_HISTORY", "CAN_ACCESS_PAGE_GROUP", "CAN_ACCESS_PAGE_MATH_CHANNELS", "CAN_ACCESS_PAGE_IO_CHANNELS",
+				"CAN_ACCESS_PAGE_TEST_CHANNELS", "CAN_ACCESS_PAGE_GROUP_MESSAGES", "CAN_ACCESS_PAGE_COUNTER_CHANNELS", "CAN_ACCESS_PAGE_TOTALISER_CHANNELS",
+				"CAN_ACCESS_PAGE_TIMER_CHANNELS", "CAN_ACCESS_PAGE_SECURITY", "CAN_ACCESS_PAGE_GROUP_MESSAGES", "CAN_ACCESS_PAGE_JOBS",
+				"CAN_ACCESS_PAGE_MESSAGE_TEMPLATES", "CAN_ACCESS_PAGE_ALARM_SUMMARY","CAN_TIMER_HOLD", "CAN_TOTALISER_HOLD",
+				"CAN_COUNTER_HOLD", "CAN_EDIT_OWN_PASSWORD", "CAN_EDIT_ALL_PASSWORDS", "CAN_MASK_ALARMS ", "CAN_ACCESS_PAGE_ALARM_HISTORY",
+				"CAN_ACCESS_PAGE_DEVICE_SETTINGS", "CAN_EDIT_DEVICE_SETTINGS", "CAN_ACCESS_PAGE_CHANNELS", "CAN_ACCESS_PAGE_SHELVED_ALARMS"
+			]
+		},
+		{
+			"Zone": "Z2",
+			"DevDef": "EPM",
+			"Role": "Quality",
+			"Perms": [
+				"CAN_NOTE", "CAN_ANNOTATE_NOTE",
+				"CAN_ANNOTATE_APPROVE", "CAN_ANNOTATE_FAIL", "CAN_ANNOTATE_RELEASE", "CAN_ANNOTATE_REVIEW",
+				"CAN_AUTHORIZE", "CAN_SIGN", "CAN_EDIT_OWN_PASSWORD"
+			]
+		},
+		{
+			"Zone": "Z2",
+			"DevDef": "EPM",
+			"Role": "Operator",
+			"Perms": [
+				"CAN_ACKNOWLEDGE_ALARMS", "CAN_SUPPRESS_ALARMS", "CAN_SHELVE_ALARMS",
+				"CAN_ACTION_DEMAND_WRITES", "CAN_ADJUST_IO", "CAN_NOTE", "CAN_ANNOTATE_NOTE",
+				"CAN_AUTHORIZE", "CAN_BATCH_CONTROL", "CAN_BATCH_CONTROL_START", "CAN_BATCH_CONTROL_STOP",
+				"CAN_BATCH_CONTROL_PAUSE", "CAN_BATCH_CONTROL_RESUME","CAN_EDIT_OWN_PASSWORD", "CAN_ENTER_BATCH_DATA",
+				"CAN_INVOKE_LEVEL1_EVENTS", "CAN_INVOKE_LEVEL2_EVENTS", "CAN_INVOKE_LEVEL3_EVENTS",
+				"CAN_PRESET_COUNTERS", "CAN_RESET_COUNTERS", "CAN_PRESET_TOTALISERS", "CAN_RESET_MATHS",
+				"CAN_SIGN", "CAN_RESET_TIMERS", "CAN_START_TIMERS",
+				"CAN_ACCESS_PAGE_BATCH_SUMMARY", "CAN_ACCESS_PAGE_EMAIL_CONFIGURATION", "CAN_ACCESS_PAGE_GROUPS",
+				"CAN_ACCESS_PAGE_BATCH_HISTORY", "CAN_ACCESS_PAGE_GROUP", "CAN_ACCESS_PAGE_MATH_CHANNELS", "CAN_ACCESS_PAGE_IO_CHANNELS",
+				"CAN_ACCESS_PAGE_TEST_CHANNELS", "CAN_ACCESS_PAGE_GROUP_MESSAGES", "CAN_ACCESS_PAGE_COUNTER_CHANNELS", "CAN_ACCESS_PAGE_TOTALISER_CHANNELS",
+				"CAN_ACCESS_PAGE_TIMER_CHANNELS", "CAN_ACCESS_PAGE_SECURITY", "CAN_ACCESS_PAGE_GROUP_MESSAGES", "CAN_ACCESS_PAGE_JOBS",
+				"CAN_ACCESS_PAGE_MESSAGE_TEMPLATES", "CAN_ACCESS_PAGE_ALARM_SUMMARY","CAN_TIMER_HOLD", "CAN_TOTALISER_HOLD",
+				"CAN_COUNTER_HOLD", "CAN_EDIT_OWN_PASSWORD", "CAN_ACCESS_PAGE_ALARM_HISTORY",
+				"CAN_ACCESS_PAGE_DEVICE_SETTINGS", "CAN_ACCESS_PAGE_CHANNELS", "CAN_ACCESS_PAGE_SHELVED_ALARMS"
+			]
+		}
+	]
+	
+}

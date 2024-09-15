@@ -1,0 +1,1181 @@
+openapi: 3.0.2
+info:
+  title: User Access Manager API
+  description: >-
+    Watlow NextGen EPM Suite will onboard its first default application User Access Manager (UAM).
+    UAM will manage Zones, Users, Roles, Devices and System Policies.
+  contact:
+    name: Watlow
+    url: https://watlow.com
+  version: 1.0.0
+servers:
+  - url: https://api-user-access-management-dev.watlow.com/api/epm-suite/uam/v1
+    description: DEV Environment
+  - url: https://api-user-access-management-dev.watlow.com/api/epm-suite/uam/v1
+    description: TEST Environment
+  - url: https://api-user-access-management-dev.watlow.com/api/epm-suite/uam/v1
+    description: STG Environment
+  - url: https://localhost/api/epm-suite/uam/v1
+    description: Localhost Environment
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: User Authentication and Token Generation
+      operationId: AuthToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Set-Cookie:
+                description: Session Cookie
+                schema:
+                  type: string
+                  example: sessionID=abc123xyz; HttpOnly; Secure; Path=/; Max-Age=900
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /auth/logout:
+    post:
+      tags:
+        - Auth
+      summary: Logout User
+      operationId: logoutUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogoutRequest'
+      responses:
+        '204':
+          description: Logout Successful
+          headers:
+            Set-Cookie:
+                description: Session Cookie
+                schema:
+                  type: string
+                  example: sessionID=; HttpOnly; Secure; Path=/; Max-Age=0
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+      security:
+        - BearerAuth: []
+  /auth/validate-session:
+    get:
+      tags:
+        - Auth
+      summary: Validate Session
+      operationId: validateSession
+      parameters:
+        - name: Cookie
+          in: header
+          description: Session ID of the user
+          required: true
+          schema:
+            type: string
+            example: abc123def456
+      responses:
+        '200':
+          description: OK
+          headers:
+            Set-Cookie:
+                description: Session Cookie
+                schema:
+                  type: string
+                  example: sessionID=abc123xyz; HttpOnly; Secure; Path=/; Max-Age=900
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+      security:
+        - BearerAuth: []
+  /auth/change-password:
+    post:
+      tags:
+        - Auth
+      summary: Change Password
+      operationId: changePassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+      responses:
+        '204':
+          description: Password Changed Successfully
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+      security:
+        - BearerAuth: []
+  /auth/reset-password:
+    get:
+      tags:
+        - Auth
+      summary: Reset Password Link Validation
+      operationId: validateResetPasswordLink
+      parameters:
+        - name: token
+          in: query
+          description: Hashed Token with username and password for the given email
+          required: true
+          schema:
+            type: string
+            example: abc123def456
+        - name: email
+          in: query
+          description: Email ID of the user
+          required: true
+          schema:
+            type: string
+            example: john.doe@acme.com
+      responses:
+        '200':
+          description: Password Changed Successfully
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+    post:
+      tags:
+        - Auth
+      summary: Reset Password
+      operationId: resetPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequest'
+      responses:
+        '204':
+          description: Password Reset Successful
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+      security:
+        - BearerAuth: []
+  /dashboard:
+    get:
+      tags:
+        - Dashboard
+      summary: Dashboard summary
+      operationId: dashboardSummary
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/Dashboard'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+      security:
+        - BearerAuth: ['CAN_EDIT_SECURITY']
+  /users:
+    post:
+      tags:
+        - Users
+      summary: Create user
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error409'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+      security:
+        - BearerAuth: ['CAN_EDIT_SECURITY']
+    get:
+      tags:
+        - Users
+      summary: List users
+      operationId: listUsers
+      parameters:
+        - name: username
+          in: query
+          description: List all users by username
+          required: false
+          schema:
+            type: string
+            example: john
+        - name: role
+          in: query
+          description: List all users by role
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              example: role=Operator&role=Administrator
+          explode: true
+          style: form
+        - name: status
+          in: query
+          description: List all users by status
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum: ['active','inactive','retired','locked','all']
+              example: status=inactive&status=retired&status=locked
+          explode: true
+          style: form
+        - name: offset
+          in: query
+          description: Starting index of the record for pagination
+          required: false
+          schema:
+            type: integer
+            example: 100
+            default: 0
+            minimum: 0
+        - name: limit
+          in: query
+          description: Ending index of the record for pagination
+          required: false
+          schema:
+            type: integer
+            example: 700
+            default: 500
+            minimum: 50
+            maximum: 1000
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-total-count:
+              description: Total number of records available
+              schema:
+                type: integer
+                example: 1000
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+      security:
+        - BearerAuth: ['CAN_EDIT_SECURITY']
+  /users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Enquire user by id
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          description: Fetch user by ID
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+      security:
+        - BearerAuth: ['CAN_EDIT_SECURITY']
+    put:
+      tags:
+        - Users
+      summary: Update user by id
+      operationId: updateUser
+      parameters:
+        - name: id
+          in: path
+          description: Updates user by ID
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+      security:
+        - BearerAuth: ['CAN_EDIT_SECURITY']
+    delete:
+      tags:
+        - Users
+      summary: Delete user by id
+      operationId: deleteUser
+      parameters:
+        - name: id
+          in: path
+          description: Delete the user by id
+          required: true
+          schema:
+            type: integer
+            example: 2
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+      security:
+        - BearerAuth: ['CAN_EDIT_SECURITY']
+  /roles:
+    post:
+      tags:
+        - Roles
+      summary: Create Role
+      operationId: createRole
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error409'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+      security:
+        - BearerAuth: ['CAN_EDIT_SECURITY']
+    get:
+      tags:
+        - Roles
+      summary: List Roles
+      operationId: listRoles
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+      security:
+        - BearerAuth: ['CAN_EDIT_SECURITY']
+  /roles/{id}:
+    get:
+      tags:
+        - Roles
+      summary: Enquire role by id
+      operationId: getRoleById
+      parameters:
+        - name: id
+          in: path
+          description: Fetch Role by ID
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+      security:
+        - BearerAuth: ['CAN_EDIT_SECURITY']
+    put:
+      tags:
+        - Roles
+      summary: Update role by id
+      operationId: updateRole
+      parameters:
+        - name: id
+          in: path
+          description: Updates Role by ID
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+      security:
+        - BearerAuth: ['CAN_EDIT_SECURITY']
+    delete:
+      tags:
+        - Roles
+      summary: Delete Role by id
+      operationId: deleteRole
+      parameters:
+        - name: id
+          in: path
+          description: Delete the Role by id
+          required: true
+          schema:
+            type: integer
+            example: 2
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+      security:
+        - BearerAuth: ['CAN_EDIT_SECURITY']
+components:
+  schemas:
+    Error400:
+      title: Bad Request
+      required:
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: A URI reference [RFC3986] that identifies the       problem type.
+          format: uri
+          example: https://localhost/api/epm-suite/problem/validation-error
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type.
+          example: Invalid Request
+        status:
+          type: number
+          description: >-
+            The HTTP status code ([RFC7231], Section 6) generated by the      
+            origin server for this occurrence of the problem.
+          example: 400
+        detail:
+          type: string
+          description: >-
+            A human-readable explanation specific to this       occurrence of
+            the problem.
+          example: Provided input request parameter is not valid.
+        invalidParams:
+          uniqueItems: true
+          type: array
+          description: An array of validation errors.
+          items:
+            $ref: '#/components/schemas/Error400_invalidParams'
+      description: Error occurred while validating the request (based on       rfc7807)
+    Error401:
+      title: Unauthorized
+      required:
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: A URI reference [RFC3986] that identifies the       problem type.
+          format: uri
+          example: https://localhost/epm-suite/api/problem/unauthorized
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type.
+          example: Unauthorized
+        status:
+          type: number
+          description: >-
+            The HTTP status code ([RFC7231], Section 6) generated by the      
+            origin server for this occurrence of the problem.
+          example: 401
+        detail:
+          type: string
+          description: >-
+            A human-readable explanation specific to this       occurrence of
+            the problem.
+          example: Invalid access token
+      description: Error occurred while authorizing the request (based on       rfc7807)
+    Error403:
+      title: Forbidden
+      required:
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: A URI reference [RFC3986] that identifies the       problem type.
+          format: uri
+          example: https://localhost/epm-suite/api/problem/forbidden
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type.
+          example: Forbidden
+        status:
+          type: number
+          description: >-
+            The HTTP status code ([RFC7231], Section 6) generated by the      
+            origin server for this occurrence of the problem.
+          example: 403
+        detail:
+          type: string
+          description: >-
+            A human-readable explanation specific to this       occurrence of
+            the problem.
+          example: Permission Denied
+      description: Error occurred while authorizing the request (based on       rfc7807)
+    Error409:
+      title: Conflict
+      required:
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: A URI reference [RFC3986] that identifies the       problem type.
+          format: uri
+          example: https://localhost/api/epm-suite/problem/conflict
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type.
+          example: Conflict
+        status:
+          type: number
+          description: >-
+            The HTTP status code ([RFC7231], Section 6) generated by the      
+            origin server for this occurrence of the problem.
+          example: 409
+        detail:
+          type: string
+          description: >-
+            A human-readable explanation specific to this       occurrence of
+            the problem.
+          example: Record already exists.
+      description: Conflict
+    Error500:
+      title: Server Error
+      required:
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: A URI reference [RFC3986] that identifies the       problem type.
+          format: uri
+          example: https://localhost/api/epm-suite/problem/internal-server-error
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type.
+          example: Internal Server Error
+        status:
+          type: number
+          description: >-
+            The HTTP status code ([RFC7231], Section 6) generated by the      
+            origin server for this occurrence of the problem.
+          example: 500
+        detail:
+          type: string
+          description: >-
+            A human-readable explanation specific to this       occurrence of
+            the problem.
+          example: Something went wrong, please try again later.
+      description: Error occurred while processing the request
+    LogoutRequest:
+      title: Logout Request
+      type: object
+      properties:
+        username:
+          type: string
+          example: john.doe
+    ResetPasswordRequest:
+      title: Reset Password
+      type: object
+      properties:
+        newPassword:
+          type: string
+          example: Secured.2
+    ChangePasswordRequest:
+      title: Change Password
+      type: object
+      properties:
+        oldPassword:
+          type: string
+          example: Welcome.1
+        newPassword:
+          type: string
+          example: Secured.2
+    LoginRequest:
+      title: Login Request
+      type: object
+      properties:
+        username:
+          type: string
+          example: john.doe
+        password:
+          type: string
+          example: Welcome.1
+    LoginResponse:
+      title: Login Response
+      type: object
+      properties:
+        token:
+          type: string
+          example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+        expiresIn:
+          type: integer
+          example: 3600
+    Dashboard:
+      title: Dashboard
+      type: object
+      properties:
+        zones:
+          type: integer
+          example: 2
+        users:
+          type: integer
+          example: 1200
+        roles:
+          type: integer
+          example: 20
+        devices:
+          type: integer
+          example: 3000
+    Attribute:
+      title: Custom Attribute
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+          readOnly: true
+        name:
+          type: string
+          example: "Phone Number"
+        value:
+          type: string
+          example: "+91-6553678902"
+    Role:
+      title: Role
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+          readOnly: true
+        name:
+          type: string
+          example: Quality
+        description:
+          type: string
+          example: Person who checks the quality of device
+        isLoggedOutType:
+          type: boolean
+          example: false
+          default: false
+        linkUsers:
+          type: array
+          items:
+            type: integer
+          example: [1, 2, 3, 4]
+          description: Array of user id
+          writeOnly: true
+        noOfUsers:
+          type: integer
+          example: 25
+          readOnly: true
+      required:
+        - name
+    User:
+      title: User
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+          readOnly: true
+        username:
+          type: string
+          example: johndoe
+        password:
+          type: string
+          example: Welcome.1
+          writeOnly: true
+        domain:
+          type: string
+          enum: ['local','ad']
+          example: local
+          default: local
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: Doe
+        description:
+          type: string
+          example: Normal user
+        email:
+          type: string
+          example: john.doe@acme.com
+        language:
+          type: string
+          enum: ['en','fr','de','zh','es']
+          example: en
+          default: en
+        isActive:
+          type: boolean
+          example: false
+          default: false
+        inactiveDate:
+          type: string
+          format: datetime
+          example: 2025-08-24T00:00:00Z
+        isRetired:
+          type: boolean
+          example: true
+          default: false
+        retiredDate:
+          type: string
+          format: datetime
+          example: 2025-08-24T00:00:00Z
+        isLocked:
+          type: boolean
+          example: true
+          default: false
+        lockedDate:
+          type: string
+          format: datetime
+          example: 2025-08-24T00:00:00Z
+        lockedReason:
+          type: string
+          example: Exceeded wrong password attempts
+        isLegacy:
+          type: boolean
+          example: false
+          default: false
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+        userAttributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attribute'
+        lastLogin:
+          type: string
+          format: datetime
+          example: 2024-08-28T00:00:00Z
+        isPasswordExpiryEnabled:
+          type: boolean
+          example: true
+          default: true
+        passwordExpiryDate:
+          type: string
+          format: datetime
+          example: 2025-08-24T00:00:00Z
+        resetPassword:
+          type: boolean
+          example: false
+          default: false
+      required:
+        - username
+        - password
+    Error400_invalidParams:
+      title: Invalid Param
+      required:
+        - in
+        - name
+        - reason
+      type: object
+      properties:
+        in:
+          type: string
+          example: query
+          enum:
+            - path
+            - query
+            - header
+        name:
+          type: string
+          example: param1
+        reason:
+          type: string
+          example: param1 does not match the expected pattern.
+      additionalProperties: false
+      description: The validation error descriptor.
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "JWT Authorization header using the Bearer scheme. Example: 'Bearer {token}'"
+            

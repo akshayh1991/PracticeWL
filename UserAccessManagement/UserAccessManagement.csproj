@@ -23,4 +23,8 @@
 		<ProjectReference Include="..\SecMan.Interfaces\SecMan.Interfaces.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="yamlFiles\" />
+	</ItemGroup>
+
 </Project>

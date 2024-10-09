@@ -13,8 +13,8 @@ namespace UserAccessManagement.Controllers
     /// </summary>
     [Route("roles")]
     [ApiController]
-    [Authorize]
-    [TypeFilter(typeof(SecurityActionFilter), Arguments = ["CAN_EDIT_SECURITY"])]
+    //[Authorize]
+    //[TypeFilter(typeof(SecurityActionFilter), Arguments = ["CAN_EDIT_SECURITY"])]
     public class RoleController : ControllerBase
     {
         private readonly IRoleBL _roleBAL; // Business logic layer for roles

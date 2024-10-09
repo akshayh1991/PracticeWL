@@ -24,7 +24,7 @@ namespace SecMan.Data
         public string? Name { get; set; }
 
         public List<Dev> Devs { get; set; } = [];
-        public List<Role> Roles { get; set; } = [];
+        public List<RoleData> Roles { get; set; } = [];
 
         public bool AddRole(ulong roleId)
         {

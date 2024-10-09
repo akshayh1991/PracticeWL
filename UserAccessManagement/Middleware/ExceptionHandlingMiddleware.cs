@@ -7,17 +7,32 @@ using System.Net;
 
 namespace UserAccessManagement.Middleware
 {
+    /// <summary>
+    /// This is a middleware which will append common model to 500 internal server exceptions
+    /// </summary>
     public class ExceptionHandlingMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly IWebHostEnvironment _env;
 
-        public ExceptionHandlingMiddleware(RequestDelegate next, IWebHostEnvironment env)
+
+        /// <summary>
+        /// This is an Middleware constructor for DI
+        /// </summary>
+        /// <param name="next"></param>
+        /// <param name="env"></param>
+        public ExceptionHandlingMiddleware(RequestDelegate next,
+                                           IWebHostEnvironment env)
         {
             _next = next;
             _env = env;
         }
 
+        /// <summary>
+        /// This method will triggered by pipeline when request comes this method
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public async Task InvokeAsync(HttpContext context)
         {
             try
@@ -46,7 +61,7 @@ namespace UserAccessManagement.Middleware
                 };
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = StatusCodes.Status409Conflict;
-                var jsonResponse1 = JsonConvert.SerializeObject(response);
+                string jsonResponse1 = JsonConvert.SerializeObject(response);
                 return context.Response.WriteAsync(jsonResponse1);
             }
             else if (exception is BadRequestForLinkUsersNotExits)
@@ -60,7 +75,7 @@ namespace UserAccessManagement.Middleware
                 };
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                var jsonResponse1 = JsonConvert.SerializeObject(response);
+                string jsonResponse1 = JsonConvert.SerializeObject(response);
                 return context.Response.WriteAsync(jsonResponse1);
             }
             else if (exception is CommonBadRequestForRole)
@@ -74,7 +89,7 @@ namespace UserAccessManagement.Middleware
                 };
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                var jsonResponse1 = JsonConvert.SerializeObject(response);
+                string jsonResponse1 = JsonConvert.SerializeObject(response);
                 return context.Response.WriteAsync(jsonResponse1);
             }
             else if (exception is UpdatingExistingNameException)
@@ -88,7 +103,7 @@ namespace UserAccessManagement.Middleware
                 };
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                var jsonResponse1 = JsonConvert.SerializeObject(response);
+                string jsonResponse1 = JsonConvert.SerializeObject(response);
                 return context.Response.WriteAsync(jsonResponse1);
             }
             else
@@ -109,7 +124,7 @@ namespace UserAccessManagement.Middleware
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
-            var jsonResponse = JsonConvert.SerializeObject(response);
+            string jsonResponse = JsonConvert.SerializeObject(response);
             return context.Response.WriteAsync(jsonResponse);
         }
     }

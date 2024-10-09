@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SecMan.Data.SQLCipher
 {
-    internal class Db : DbContext
+    public class Db : DbContext
     {
         public DbSet<SuperUser> SuperUsers { get; set; }
         public DbSet<SysFeat> SysFeats { get; set; }
@@ -30,11 +30,11 @@ namespace SecMan.Data.SQLCipher
         public DbSet<DevPolVal> DevPolVals { get; set; }
         public DbSet<DevSigVal> DevSigVals { get; set; }
         public DbSet<DevPermVal> DevPermVals { get; set; }
+        public DbSet<PasswordHistory> PasswordHistories { get; set; }
         public string DbPath { get; }
         public Db()
         {
             //DbPath = System.IO.Path.Join(@"C:\Users\akshay_huded\OneDrive - Torry Harris Business Solutions Pvt Ltd\Pavan\1\SecMan_9_9\SecMan.Db", "SecMan.db");
-            //DbPath = System.IO.Path.Join(@"C:\Users\aksha\OneDrive\Desktop\GitProjects\PracticeWL\PracticeWL\SecMan.Db", "SecMan.db");
             var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .Build();
             var dbPathConfig = configuration.GetSection("DBPath").Value;
@@ -44,7 +44,12 @@ namespace SecMan.Data.SQLCipher
         // The following configures EF to create a Sqlite database file in the
         // special "local" folder for your platform.
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite($"Data Source={DbPath}");
+        {
+            if (!options.IsConfigured)
+            {
+                options.UseSqlite($"Data Source={DbPath}");
+            }
+        }
 
 
 
@@ -52,6 +57,20 @@ namespace SecMan.Data.SQLCipher
         // dotnet add package Microsoft.EntityFrameworkCore.Design
         // dotnet ef migrations add InitialCreate
         // dotnet ef database update
+
+
+        // added by pavan
+        public Db(DbContextOptions<Db> options, string databaseFile)
+        : base(options)
+        {
+            DbPath = databaseFile;
+        }
+
+        public DbSet<APIAudit> APIAudits { get; set; }
+        public DbSet<LoginLogs> LoginLogs { get; set; }
+
+
+
     }
 }
 

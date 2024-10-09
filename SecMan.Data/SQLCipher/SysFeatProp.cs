@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SecMan.Data.SQLCipher
 {
-    internal class SysFeatProp
+    public class SysFeatProp
     {
         [Key]
         public ulong Id { get; set; }

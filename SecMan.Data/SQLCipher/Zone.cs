@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SecMan.Data.SQLCipher
 {
-    internal class Zone
+    public class Zone
     {
         [Key]
         public ulong Id { get; set; }

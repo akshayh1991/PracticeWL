@@ -48,6 +48,68 @@ namespace SecMan.Model
 
 
 
+    public class Unauthorized : CommonResponse
+    {
+        public Unauthorized()
+        {
+
+        }
+
+        public Unauthorized(string title, HttpStatusCode status, string detail) : base(title, status, detail)
+        {
+            Title = title;
+            Status = status;
+            Detail = detail;
+        }
+    }
+
+
+    public class Forbidden : CommonResponse
+    {
+        public Forbidden()
+        {
+
+        }
+
+        public Forbidden(string title, HttpStatusCode status, string detail) : base(title, status, detail)
+        {
+            Title = title;
+            Status = status;
+            Detail = detail;
+        }
+    }
+
+
+    public class ServerError : CommonResponse
+    {
+        public ServerError()
+        {
+
+        }
+
+        public ServerError(string title, HttpStatusCode status, string detail) : base(title, status, detail)
+        {
+            Title = title;
+            Status = status;
+            Detail = detail;
+        }
+    }
+
+
+    public class Conflict : CommonResponse
+    {
+        public Conflict()
+        {
+
+        }
+
+        public Conflict(string title, HttpStatusCode status, string detail) : base(title, status, detail)
+        {
+            Title = title;
+            Status = status;
+            Detail = detail;
+        }
+    }
 
     public class CommonResponse
     {
@@ -88,16 +150,16 @@ namespace SecMan.Model
     }
 
 
-    public class BadRequestResponse : CommonResponse
+    public class BadRequest : CommonResponse
     {
-        public BadRequestResponse(string title, string detail, List<InvalidParams>? invalidParams = null)
+        public BadRequest(string title, string detail, List<InvalidParams?>? invalidParams = null)
             : base(title, HttpStatusCode.BadRequest, detail)
         {
             InvalidParams = invalidParams;
         }
 
         [JsonProperty("invalidParams")]
-        public List<InvalidParams>? InvalidParams { get; set; }
+        public List<InvalidParams?>? InvalidParams { get; set; }
     }
 
 

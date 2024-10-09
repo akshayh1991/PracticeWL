@@ -15,35 +15,35 @@ namespace SecMan.BL
     public class EncryptionDecryption : IEncryptionDecryption
     {
         private readonly IConfiguration _configuration;
-        private readonly int SaltSize;
-        private readonly int Iterations;
-        private readonly int HashSize;
+        private readonly int _saltSize;
+        private readonly int _iterations;
+        private readonly int _hashSize;
 
         public EncryptionDecryption(IConfiguration configuration)
         {
             _configuration = configuration;
-            SaltSize = Convert.ToInt32(configuration["EncryptionConstants:SaltSize"]);
-            Iterations = Convert.ToInt32(configuration["EncryptionConstants:Iterations"]);
-            HashSize = Convert.ToInt32(configuration["EncryptionConstants:HashSize"]);
+            _saltSize = Convert.ToInt32(configuration["EncryptionConstants:SaltSize"]);
+            _iterations = Convert.ToInt32(configuration["EncryptionConstants:Iterations"]);
+            _hashSize = Convert.ToInt32(configuration["EncryptionConstants:HashSize"]);
         }
 
 
         public string EncryptPassword(string password, bool IsLegacy)
         {
             if (IsLegacy)
-                return EncryptPasswordAES256(password, EncryptionTypes.AESEncryption.ToString());
+                return EncryptPasswordAES256(password, ((int)EncryptionTypes.AESEncryption).ToString());
             else
-                return HashPasswordPBKDF2(password, EncryptionTypes.PBKDF2Hashing.ToString());
+                return HashPasswordPBKDF2(password, ((int)EncryptionTypes.PBKDF2Hashing).ToString());
         }
 
 
         private string EncryptPasswordAES256(string password, string encryptionType)
         {
             using Aes aes = Aes.Create();
-            var keyString = _configuration["EncryptionConstants:SHAKey"];
+            string? keyString = _configuration["EncryptionConstants:SHAKey"];
             if (string.IsNullOrWhiteSpace(keyString))
             {
-                throw new InvalidOperationException("The encryption key is not properly configured. It cannot be empty.");
+                throw new InvalidOperationException(EncryptionClassConstants.NullEncryptedString);
             }
             aes.Key = Encoding.UTF8.GetBytes(keyString);
             aes.GenerateIV();
@@ -55,9 +55,9 @@ namespace SecMan.BL
         }
 
 
-        private static string DecryptPasswordAES256(string encryptedString)
+        public string DecryptPasswordAES256(string encryptedString)
         {
-            var parts = encryptedString.Split('$');
+            string[] parts = encryptedString.Split('$');
             if (parts.Length != 5)
                 throw new FormatException(EncryptionClassConstants.InvalidEncryptedStringFormat);
 
@@ -128,13 +128,13 @@ namespace SecMan.BL
 
         public string HashPasswordPBKDF2(string password, string id)
         {
-            byte[] salt = new byte[SaltSize];
-            using (var rng = new RNGCryptoServiceProvider())
+            byte[] salt = new byte[_saltSize];
+            using (var rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(salt);
             }
 
-            byte[] hash = PBKDF2(password, salt, Iterations, HashSize);
+            byte[] hash = PBKDF2(password, salt, _iterations, _hashSize);
 
             string saltHex = BitConverter.ToString(salt).Replace("-", "").ToLower();
             string hashHex = BitConverter.ToString(hash).Replace("-", "").ToLower();
@@ -145,7 +145,7 @@ namespace SecMan.BL
 
         private static byte[] PBKDF2(string password, byte[] salt, int iterations, int hashSize)
         {
-            using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations, HashAlgorithmName.SHA256);
+            using Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations, HashAlgorithmName.SHA256);
             return pbkdf2.GetBytes(hashSize);
         }
 
@@ -164,7 +164,7 @@ namespace SecMan.BL
             byte[] salt = HexStringToByteArray(saltHex);
             byte[] storedHash = HexStringToByteArray(storedHashHex);
 
-            byte[] hash = PBKDF2(passwordToVerify, salt, Iterations, HashSize);
+            byte[] hash = PBKDF2(passwordToVerify, salt, _iterations, _hashSize);
 
             return CryptographicEqual(storedHash, hash);
         }

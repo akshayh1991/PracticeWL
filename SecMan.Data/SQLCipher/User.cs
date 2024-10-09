@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace SecMan.Data.SQLCipher
 {
-    internal class User
+    public class User
     {
-        internal User()
+        public User()
         {
         }
-        internal User(string userName, string password)
+        public User(string userName, string password)
         {
             UserName = userName;
             Password = password;
@@ -56,11 +56,18 @@ namespace SecMan.Data.SQLCipher
         public bool IsActive { get; set; } = true; //added newly
         public DateTime? InActiveDate { get; set; } = DateTime.MinValue; //added newly
         public bool ResetPassword { get; set; } //added newly
+        public bool FirstLogin { get; set; } = true; //added newly
 
 
         public string SessionId { get; set; } = string.Empty;
         public DateTime SessionExpiry { get; set; } = DateTime.MinValue;
 
         public List<Role> Roles { get; set; } = [];
+
+        //public string? HashedUserNamePassword{ get; set; }
+        //public DateTime? HashedUserNamePasswordTime { get; set; }
+
+        public string? ResetPasswordToken { get; set; }
+        public DateTime? ResetPasswordTokenExpiry { get; set; }
     }
 }

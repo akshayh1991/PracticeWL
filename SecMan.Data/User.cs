@@ -1,12 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SecMan.Interfaces.DAL;
-using Serilog;
+using SecMan.Model;
+using System.Linq.Expressions;
 using static SecMan.Model.User;
 
 namespace SecMan.Data
 {
-    public class User : IUserDAL
+    public class User 
     {
+
+        #region Jon's Code
+
         private enum Property
         {
             Domain,
@@ -73,7 +78,7 @@ namespace SecMan.Data
 
             if (includeRoles)
             {
-                if (Roles == null) Roles = new List<Role>();
+                if (Roles == null) Roles = new List<RoleData>();
                 sqlCipherUser.Roles
                     .ToList()
                     .ForEach(o => Roles.Add(new(o, false)));
@@ -346,7 +351,7 @@ namespace SecMan.Data
             }
             return ok;
         }
-        public List<Role> Roles { get; set; } = [];
+        public List<RoleData> Roles { get; set; } = [];
 
         public bool AddRole(ulong roleId)
         {
@@ -402,7 +407,7 @@ namespace SecMan.Data
             SecManDb.dbLock.EnterWriteLock();
             try
             {
-                Role role = Roles.Where(o => o.Id == roleId).FirstOrDefault();
+                RoleData role = Roles.Where(o => o.Id == roleId).FirstOrDefault();
                 if (role != null)
                 {
                     using SQLCipher.Db db = new();
@@ -591,182 +596,10 @@ namespace SecMan.Data
             return userDevPerms;
         }
 
-        #region Pavan's code
-
-        public async Task<ulong> AddUserAsync(AddUserDto model)
-        {
-            Log.Information("Creating new DB Object");
-            SQLCipher.Db db = new();
-
-            Log.Information("Mapping data to dbset user object");
-            var user = new SQLCipher.User
-            {
-                Description = model.Description,
-                Domain = model.Domain,
-                Email = model.Email,
-                FirstName = model.FirstName,
-                Language = model.Language,
-                LastName = model.LastName,
-                IsLegacy = model.IsLegacy,
-                Password = model.Password,
-                PasswordExpiryDate = model.PasswordExpiryDate,
-                IsPasswordExpiryEnable = model.IsPasswordExpiryEnabled,
-                Retired = model.IsRetired,
-                RetiredDate = model.RetiredDate,
-                UserName = model.Username,
-                IsActive = model.IsActive,
-                InActiveDate = model.InactiveDate,
-                Locked = model.IsLocked,
-                LockedDate = model.LockedDate,
-                LockedReason = model.LockedReason,
-                LastLoginDate = model.LastLogin,
-            };
-
-            Log.Information("fetching all the roles which are need to be associated with user");
-            var roles = db.Roles.Where(x => model.Roles.Select(x => x.Id).Contains(x.Id)).ToList();
-
-            Log.Information("assigning roles to user object");
-            user.Roles = roles;
-
-            Log.Information("adding user to db");
-            await db.AddRangeAsync(user);
-            await db.SaveChangesAsync();
-            Log.Information("completed adding user to db");
-            return user.Id;
-        }
-
-
-        public async Task<ulong> UpdateUserAsync(AddUserDto model, ulong userId)
-        {
-            Log.Information("Creating new DB Object");
-            SQLCipher.Db db = new();
-
-            Log.Information("Fetch user object by user Id : {userId} to update", userId);
-            var user = await db.Users
-                                     .Where(x => x.Id == userId)
-                                     .Include(x => x.Roles)
-                                     .FirstOrDefaultAsync();
-            Log.Information("assigning new values to user object");
-            if (user is null)
-                throw new ArgumentNullException(nameof(user), "User object cannot be null.");
-            user.Description = model.Description;
-            user.Domain = model.Domain;
-            user.Email = model.Email;
-            user.FirstName = model.FirstName;
-            user.Language = model.Language;
-            user.LastName = model.LastName;
-            user.IsLegacy = model.IsLegacy;
-            user.PasswordExpiryDate = model.PasswordExpiryDate;
-            user.IsPasswordExpiryEnable = model.IsPasswordExpiryEnabled;
-            user.Retired = model.IsRetired;
-            user.RetiredDate = model.RetiredDate;
-            user.UserName = model.Username;
-            user.IsActive = model.IsActive;
-            user.InActiveDate = model.InactiveDate;
-            user.Locked = model.IsLocked;
-            user.LockedDate = model.LockedDate;
-            user.LockedReason = model.LockedReason;
-            user.LastLoginDate = model.LastLogin;
-
-
-            Log.Information("fetching all the roles which are need to be associated with user");
-            var roles = db.Roles.Where(x => model.Roles.Select(x => x.Id).Contains(x.Id)).ToList();
-
-            Log.Information("assigning roles to user object");
-            user.Roles = roles;
-
-            Log.Information("Updating user object to db");
-            db.UpdateRange(user);
-            await db.SaveChangesAsync();
-            Log.Information("Completed Updating user object to db");
-            return user.Id;
-        }
-
-
-
-        public IQueryable<RoleDto> GetRoles()
-        {
-            Log.Information("Creating new DB Object");
-            SQLCipher.Db db = new();
-
-            Log.Information("Feting all roles from db projecting to custom model as Queryable");
-            var roles = db.Roles
-                                .Select(x => new RoleDto
-                                {
-                                    Description = x.Description,
-                                    Id = x.Id,
-                                    IsLoggedOutType = x.IsLoggedOutType,
-                                    Name = x.Name
-                                })
-                                .AsQueryable();
-            Log.Information("Completed fetching roles from db");
-            return roles;
-        }
-
-
-        public IQueryable<UserDto> GetUser()
-        {
-            Log.Information("Creating new DB Object");
-            SQLCipher.Db db = new();
-
-            Log.Information("Feting all users from db projecting to custom model as Queryable");
-            var users = db.Users
-                                .Select(x => new UserDto
-                                {
-                                    IsActive = x.IsActive,
-                                    Description = x.Description,
-                                    Domain = x.Domain,
-                                    Email = x.Email,
-                                    FirstName = x.FirstName,
-                                    Id = x.Id,
-                                    InactiveDate = x.InActiveDate,
-                                    IsLegacy = x.IsLegacy,
-                                    UserAttributes = new List<UserAttributeDto>(),
-                                    IsLocked = x.Locked,
-                                    IsPasswordExpiryEnabled = x.IsPasswordExpiryEnable,
-                                    IsRetired = x.Retired,
-                                    Language = x.Language,
-                                    LastLogin = x.LastLoginDate,
-                                    LastName = x.LastName,
-                                    LockedDate = x.LockedDate,
-                                    LockedReason = x.LockedReason,
-                                    PasswordExpiryDate = x.PasswordExpiryDate,
-                                    ResetPassword = x.ResetPassword,
-                                    RetiredDate = x.RetiredDate,
-                                    Username = x.UserName,
-                                    Roles = x.Roles.Select(x => new RoleDto
-                                    {
-                                        Description = x.Description,
-                                        Id = x.Id,
-                                        IsLoggedOutType = x.IsLoggedOutType,
-                                        Name = x.Name,
-                                        LinkUsers = x.Users.Select(x => x.Id).ToList()
-                                    }).ToList(),
-                                })
-                                .AsQueryable();
-            Log.Information("Completed fetching users from db");
-            return users;
-        }
-
-
-        public async Task DeleteUserAsync(ulong userId)
-        {
-            Log.Information("Creating new DB Object");
-            SQLCipher.Db db = new();
-
-            Log.Information("fetching user from db by user id : {userId}", userId);
-            var user = await db.Users
-                                     .Where(x => x.Id == userId)
-                                     .FirstOrDefaultAsync();
-            Log.Information("removing user from db");
-            if (user is null)
-                throw new ArgumentNullException(nameof(user), "User object cannot be null.");
-            db.Remove(user);
-            await db.SaveChangesAsync();
-            Log.Information("removed user from db");
-        }
-
         #endregion
+
+
+       
     }
 }
 

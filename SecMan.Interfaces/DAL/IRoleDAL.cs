@@ -2,12 +2,12 @@
 
 namespace SecMan.Interfaces.DAL
 {
-    public interface IRoleDAL
+    public interface IRoleDal
     {
-        Task<GetRoleDto> AddRoleAsync(AddRoleDto addRoleDto);
+       // Task<GetRoleDto> AddRoleAsync(CreateRole addRoleDto);
         Task<List<GetRoleDto>> GetAllRolesAsync();
-        Task<GetRoleDto?> GetRoleByIdAsync(ulong id);
-        Task<GetRoleDto?> UpdateRoleAsync(ulong id, AddRoleDto addRoleDto);
-        Task<bool> DeleteRoleAsync(ulong id);
+        //Task<GetRoleDto?> GetRoleByIdAsync(ulong id);
+        //Task<GetRoleDto?> UpdateRoleAsync(ulong id, CreateRole addRoleDto);
+        //Task<bool> DeleteRoleAsync(ulong id);
     }
 }

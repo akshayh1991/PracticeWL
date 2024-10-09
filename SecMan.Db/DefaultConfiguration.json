@@ -17,11 +17,36 @@
 		{"Name":"Operator","Zones": ["Z1", "Z2"]}
 	],
 	"Users": [
-		{"Domain":"", "UserName":"Admin01", "Password":"Admin01", "Roles": ["Administrator"]},
-		{"Domain":"", "UserName":"Qual01", "Password":"Qual01", "Roles": ["Quality", "Operator"]},
-		{"Domain":"", "UserName":"Oper01", "Password":"Oper01", "Roles": ["Operator"]},
-		{"Domain":"", "UserName":"Oper02", "Password":"Oper02", "Roles": ["Operator"]},
-		{"Domain":"", "UserName":"Oper03", "Password":"Oper03", "Roles": ["Operator"]}
+		{
+			"Domain": "",
+			"UserName": "Admin01",
+			"Password": "$2$79878f2e4a4b65baf128cd414abd7ac475096341c24e13c9d38cc73f2c1db534$1552de411624a9c16752817a8cc81b1b35bb197f5dc5debf73c90f96c9e32265",
+			"Roles": [ "Administrator" ]
+		},
+		{
+			"Domain": "",
+			"UserName": "Qual01",
+			"Password": "$2$0a4a7c0f547625690988d395007fccfda6bed053c8ace3a72575f6b843cb7dae$c5953470cd8c77253c85cd5c94da6479a1659e2e67e4f217f3891db1a9fe0c3e",
+			"Roles": [ "Quality", "Operator" ]
+		},
+		{
+			"Domain": "",
+			"UserName": "Oper01",
+			"Password": "$2$5b72a0eaba4d8c475385d98ba6c04bd89701dbd650e252019a8dd3b5baf08a08$101353b8665285785530c96066cab2178ffa40ab5615c7af61929d952b8d6eda",
+			"Roles": [ "Operator" ]
+		},
+		{
+			"Domain": "",
+			"UserName": "Oper02",
+			"Password": "$2$df2485d8049291355c49ebabf3b51253c8a7b93cfdc67b6c71e5281768c3e5d4$8d29491ede58d171266b79e6f02a93b251a392ebe92febdc4ec2f4d24a6617ea",
+			"Roles": [ "Operator" ]
+		},
+		{
+			"Domain": "",
+			"UserName": "Oper03",
+			"Password": "$2$bb59654f7cbe1a715f2d2720265a66b99d4bef4ddf78084daa8366cfa2791f9c$ab9241cbdf9ed3b4a6e4c6c708cf4f15fe98eeff8e3aebdbc1bf84ede6c70c35",
+			"Roles": [ "Operator" ]
+		}
 	],
 	"DevPols": [
 		{

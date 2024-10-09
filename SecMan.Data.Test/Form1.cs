@@ -339,7 +339,7 @@ namespace SecMan
                     // Update combo box
                     Data.Zone zone = kvp1.Value;
                     int idx = cbZoneDevPolsDevDefs.SelectedIndex;
-                    Dictionary<string, DevDef> dic = new();
+                    Dictionary<string, Data.DevDef> dic = new();
                     zone.GetDevDefs("").ForEach(o => dic.Add(o.Name, o));
                     if (dic.Count > 0)
                     {
@@ -366,10 +366,10 @@ namespace SecMan
                     Data.Zone zone = kvp1.Value;
                     if (cbZoneDevPolsDevDefs.SelectedItem != null)
                     {
-                        KeyValuePair<string, DevDef> kvp2 = (KeyValuePair<string, DevDef>)cbZoneDevPolsDevDefs.SelectedItem;
-                        DevDef devDef = kvp2.Value;
-                        List<DevPolVal> devPolVals = zone.GetDevDefPolVals(devDef.Id);
-                        foreach (DevPolVal devPolVal in devPolVals)
+                        KeyValuePair<string, Data.DevDef> kvp2 = (KeyValuePair<string, Data.DevDef>)cbZoneDevPolsDevDefs.SelectedItem;
+                        Data.DevDef devDef = kvp2.Value;
+                        List<Data.DevPolVal> devPolVals = zone.GetDevDefPolVals(devDef.Id);
+                        foreach (Data.DevPolVal devPolVal in devPolVals)
                         {
                             int i = dgvZoneDevPols.Rows.Add();
                             dgvZoneDevPols.Rows[i].Cells[0].Value = devPolVal.Id;
@@ -460,7 +460,7 @@ namespace SecMan
                     // Update combo box
                     Data.Zone zone = kvp1.Value;
                     int idx = cbZoneRolePermsDevDefs.SelectedIndex;
-                    Dictionary<string, DevDef> dic = new();
+                    Dictionary<string, Data.DevDef> dic = new();
                     zone.GetDevDefs("").ForEach(o => dic.Add(o.Name, o));
                     if (dic.Count > 0)
                     {
@@ -487,7 +487,7 @@ namespace SecMan
                     // Update combo box
                     Data.Zone zone = kvp.Value;
                     int idx = cbZoneRolePermsRoles.SelectedIndex;
-                    Dictionary<string, Role> dic = new();
+                    Dictionary<string, RoleData> dic = new();
                     zone.Roles.ForEach(o => dic.Add(o.Name, o));
                     if (dic.Count > 0)
                     {
@@ -514,23 +514,23 @@ namespace SecMan
                     Data.Zone zone = kvp1.Value;
                     if (cbZoneRolePermsDevDefs.SelectedItem != null)
                     {
-                        KeyValuePair<string, DevDef> kvp2 = (KeyValuePair<string, DevDef>)cbZoneRolePermsDevDefs.SelectedItem;
+                        KeyValuePair<string, Data.DevDef> kvp2 = (KeyValuePair<string, Data.DevDef>)cbZoneRolePermsDevDefs.SelectedItem;
                         if (kvp2.Value != null)
                         {
                             // Get DevDef
-                            DevDef devDef = kvp2.Value;
+                            Data.DevDef devDef = kvp2.Value;
                             if ((cbZoneRolePermsRoles.SelectedItem != null) && (cbZoneRolePermsRoles.Items.Count > 0))
                             {
-                                KeyValuePair<string, Role> kvp3 = (KeyValuePair<string, Role>)cbZoneRolePermsRoles.SelectedItem;
+                                KeyValuePair<string, RoleData> kvp3 = (KeyValuePair<string, RoleData>)cbZoneRolePermsRoles.SelectedItem;
                                 if (kvp3.Value != null)
                                 {
                                     // Get Role
-                                    Role role = kvp3.Value;
+                                    RoleData role = kvp3.Value;
 
                                     // Get permissions
-                                    List<DevPermVal> devPermVals = zone.GetDevDefRolePerms(devDef.Id, role.Id);
+                                    List<Data.DevPermVal> devPermVals = zone.GetDevDefRolePerms(devDef.Id, role.Id);
 
-                                    foreach (DevPermVal devPermVal in devPermVals)
+                                    foreach (Data.DevPermVal devPermVal in devPermVals)
                                     {
                                         int i = dgvZonePerms.Rows.Add();
                                         dgvZonePerms.Rows[i].Cells[0].Value = devPermVal.Id;
@@ -623,7 +623,7 @@ namespace SecMan
                     // Update combo box
                     Data.Zone zone = kvp1.Value;
                     int idx = cbZoneDevSigsDevDefs.SelectedIndex;
-                    Dictionary<string, DevDef> dic = new();
+                    Dictionary<string, Data.DevDef> dic = new();
                     zone.GetDevDefs("").ForEach(o => dic.Add(o.Name, o));
                     if (dic.Count > 0)
                     {
@@ -649,10 +649,10 @@ namespace SecMan
                     Data.Zone zone = kvp1.Value;
                     if (cbZoneDevSigsDevDefs.SelectedItem != null)
                     {
-                        KeyValuePair<string, DevDef> kvp2 = (KeyValuePair<string, DevDef>)cbZoneDevSigsDevDefs.SelectedItem;
-                        DevDef devDef = kvp2.Value;
-                        List<DevSigVal> devSigVals = zone.GetDevDefSigVals(devDef.Id);
-                        foreach (DevSigVal devSigVal in devSigVals)
+                        KeyValuePair<string, Data.DevDef> kvp2 = (KeyValuePair<string, Data.DevDef>)cbZoneDevSigsDevDefs.SelectedItem;
+                        Data.DevDef devDef = kvp2.Value;
+                        List<Data.DevSigVal> devSigVals = zone.GetDevDefSigVals(devDef.Id);
+                        foreach (Data.DevSigVal devSigVal in devSigVals)
                         {
                             int i = dgvZoneDevSigs.Rows.Add();
                             dgvZoneDevSigs.Rows[i].Cells[0].Value = devSigVal.Id;
@@ -726,7 +726,7 @@ namespace SecMan
         private void RefreshSysFeats()
         {
             int idx = cbSys.SelectedIndex;
-            Dictionary<string, SysFeat> dicSysFeats = new();
+            Dictionary<string, Data.SysFeat> dicSysFeats = new();
             secManDb.GetSysFeats("").ForEach(o => dicSysFeats.Add(o.Name, o));
             cbSys.DataSource = new BindingSource(dicSysFeats, null);
             cbSys.DisplayMember = "Key";
@@ -737,12 +737,12 @@ namespace SecMan
             dgvSys.Rows.Clear();
             if (cbSys.SelectedItem != null)
             {
-                KeyValuePair<string, SysFeat> kvp = (KeyValuePair<string, SysFeat>)cbSys.SelectedItem;
+                KeyValuePair<string, Data.SysFeat> kvp = (KeyValuePair<string, Data.SysFeat>)cbSys.SelectedItem;
                 if (kvp.Value != null)
                 {
-                    SysFeat sysFeat = kvp.Value;
+                    Data.SysFeat sysFeat = kvp.Value;
                     txtSysFeatCommon.Text = sysFeat.Common ? "True" : "False";
-                    foreach (SysFeatProp sysFeatProp in sysFeat.SysFeatProps)
+                    foreach (Data.SysFeatProp sysFeatProp in sysFeat.SysFeatProps)
                     {
                         int i = dgvSys.Rows.Add();
                         dgvSys.Rows[i].Cells[0].Value = sysFeatProp.Id;
@@ -953,7 +953,7 @@ namespace SecMan
                 if (user.Roles.Count > 0)
                 {
                     dgvUserRoles.RowCount = 1;
-                    foreach (Role role in user.Roles)
+                    foreach (RoleData role in user.Roles)
                     {
                         int i = dgvUserRoles.Rows.Add();
                         dgvUserRoles.Rows[i].Cells[0].Value = role.Name;
@@ -961,7 +961,7 @@ namespace SecMan
                 }
 
                 // Removable Roles
-                Dictionary<string, Role> dicRoles = new();
+                Dictionary<string, RoleData> dicRoles = new();
                 user.Roles.ForEach(o => dicRoles.Add(o.Name, o));
                 cboUserRemoveRole.DataSource = new BindingSource(dicRoles, null);
                 cboUserRemoveRole.DisplayMember = "Key";
@@ -1036,8 +1036,8 @@ namespace SecMan
                 Data.User user = kvpUser.Value;
 
                 // Get role
-                KeyValuePair<string, Data.Role> kvpRole = (KeyValuePair<string, Data.Role>)cboUserAddRole.SelectedItem;
-                Data.Role role = kvpRole.Value;
+                KeyValuePair<string, Data.RoleData> kvpRole = (KeyValuePair<string, Data.RoleData>)cboUserAddRole.SelectedItem;
+                Data.RoleData role = kvpRole.Value;
 
                 if (user.AddRole(role.Id))
                 {
@@ -1063,8 +1063,8 @@ namespace SecMan
                 Data.User user = kvpUser.Value;
 
                 // Get role
-                KeyValuePair<string, Data.Role> kvpRole = (KeyValuePair<string, Data.Role>)cboUserRemoveRole.SelectedItem;
-                Data.Role role = kvpRole.Value;
+                KeyValuePair<string, Data.RoleData> kvpRole = (KeyValuePair<string, Data.RoleData>)cboUserRemoveRole.SelectedItem;
+                Data.RoleData role = kvpRole.Value;
 
                 if (user.RemRole(role.Id))
                 {
@@ -1130,7 +1130,7 @@ namespace SecMan
         private void RefreshDevDefs()
         {
             int idx = cbDevDefs.SelectedIndex;
-            Dictionary<string, DevDef> dicDevDefs = new();
+            Dictionary<string, Data.DevDef> dicDevDefs = new();
             secManDb.GetDevDefs("").ForEach(o => dicDevDefs.Add(o.Name, o));
             cbDevDefs.DataSource = new BindingSource(dicDevDefs, null);
             cbDevDefs.DisplayMember = "Key";
@@ -1143,10 +1143,10 @@ namespace SecMan
             dgvDevPermDefs.Rows.Clear();
             if (cbDevDefs.SelectedItem != null)
             {
-                KeyValuePair<string, DevDef> kvp1 = (KeyValuePair<string, DevDef>)cbDevDefs.SelectedItem;
+                KeyValuePair<string, Data.DevDef> kvp1 = (KeyValuePair<string, Data.DevDef>)cbDevDefs.SelectedItem;
                 if ((kvp1.Value != null) && (kvp1.Value.DevPolDefs != null))
                 {
-                    foreach (DevPolDef devPolDef in kvp1.Value.DevPolDefs)
+                    foreach (Data.DevPolDef devPolDef in kvp1.Value.DevPolDefs)
                     {
                         int i = dgvDevPolDefs.Rows.Add();
                         dgvDevPolDefs.Rows[i].Cells[0].Value = devPolDef.Id;
@@ -1163,10 +1163,10 @@ namespace SecMan
                     }
                 }
 
-                KeyValuePair<string, DevDef> kvp2 = (KeyValuePair<string, DevDef>)cbDevDefs.SelectedItem;
+                KeyValuePair<string, Data.DevDef> kvp2 = (KeyValuePair<string, Data.DevDef>)cbDevDefs.SelectedItem;
                 if ((kvp2.Value != null) && (kvp2.Value.DevPermDefs != null))
                 {
-                    foreach (DevPermDef devPermDef in kvp2.Value.DevPermDefs)
+                    foreach (Data.DevPermDef devPermDef in kvp2.Value.DevPermDefs)
                     {
                         int i = dgvDevPermDefs.Rows.Add();
                         dgvDevPermDefs.Rows[i].Cells[0].Value = devPermDef.Id;
@@ -1193,7 +1193,7 @@ namespace SecMan
             {
                 idx = cbRoles.SelectedIndex;
             }
-            Dictionary<string, Role> dicRoles = new();
+            Dictionary<string, RoleData> dicRoles = new();
             secManDb.GetRoles().ForEach(o => dicRoles.Add(o.Name, o));
             cbRoles.DataSource = new BindingSource(dicRoles, null);
             cbRoles.DisplayMember = "Key";
@@ -1212,7 +1212,7 @@ namespace SecMan
             dgvRoleUsers.Rows.Clear();
             if (cbRoles.SelectedItem != null)
             {
-                KeyValuePair<string, Role> kvp = (KeyValuePair<string, Role>)cbRoles.SelectedItem;
+                KeyValuePair<string, RoleData> kvp = (KeyValuePair<string, RoleData>)cbRoles.SelectedItem;
                 if ((kvp.Value != null) && (kvp.Value.Users != null))
                 {
                     foreach (Data.User user in kvp.Value.Users)
@@ -1237,7 +1237,7 @@ namespace SecMan
         {
             if ((cbRoles.SelectedItem != null) && (cbRoleUser.SelectedItem != null))
             {
-                KeyValuePair<string, Role> kvpRole = (KeyValuePair<string, Role>)cbRoles.SelectedItem;
+                KeyValuePair<string, RoleData> kvpRole = (KeyValuePair<string, RoleData>)cbRoles.SelectedItem;
                 KeyValuePair<string, Data.User> kvpUser = (KeyValuePair<string, Data.User>)cbRoleUser.SelectedItem;
                 if (kvpRole.Value.RemUser(kvpUser.Value.Id))
                 {
@@ -1255,7 +1255,7 @@ namespace SecMan
         {
             if ((cbRoles.SelectedItem != null) && (cbRoleUser.SelectedItem != null))
             {
-                KeyValuePair<string, Role> kvpRole = (KeyValuePair<string, Role>)cbRoles.SelectedItem;
+                KeyValuePair<string, RoleData> kvpRole = (KeyValuePair<string, RoleData>)cbRoles.SelectedItem;
                 KeyValuePair<string, Data.User> kvpUser = (KeyValuePair<string, Data.User>)cbRoleUser.SelectedItem;
                 if (kvpRole.Value.AddUser(kvpUser.Value.Id))
                 {
@@ -1276,7 +1276,7 @@ namespace SecMan
                 if (secManDb.AddRole(tbRole.Text) != null)
                 {
                     int idx = -1;
-                    foreach (Role role in secManDb.GetRoles())
+                    foreach (RoleData role in secManDb.GetRoles())
                     {
                         idx++;
                         if (role.Name == tbRole.Text) break;
@@ -1295,10 +1295,10 @@ namespace SecMan
         {
             if (cbRoles.SelectedItem != null)
             {
-                KeyValuePair<string, Role> kvp = (KeyValuePair<string, Role>)cbRoles.SelectedItem;
+                KeyValuePair<string, RoleData> kvp = (KeyValuePair<string, RoleData>)cbRoles.SelectedItem;
                 if (kvp.Value != null)
                 {
-                    Role role = kvp.Value;
+                    RoleData role = kvp.Value;
 
                     if (secManDb.DelRole(role.Id))
                     {
@@ -1324,10 +1324,10 @@ namespace SecMan
             string roleRename = txtRoleRename.Text.Trim();
             if ((cbRoles.SelectedItem != null) && (!string.IsNullOrEmpty(roleRename)))
             {
-                KeyValuePair<string, Role> kvp = (KeyValuePair<string, Role>)cbRoles.SelectedItem;
+                KeyValuePair<string, RoleData> kvp = (KeyValuePair<string, RoleData>)cbRoles.SelectedItem;
                 if (kvp.Value != null)
                 {
-                    Role role = kvp.Value;
+                    RoleData role = kvp.Value;
                     if (role.SetName(roleRename) == SecManDb.ReturnCode.Ok)
                     {
                         MessageBox.Show("Rename tole succeeded");
@@ -1400,7 +1400,7 @@ namespace SecMan
         private void RefreshDevPerms()
         {
             int idx = cbDevPermDevs.SelectedIndex;
-            Dictionary<string, Dev> dicDevs = new();
+            Dictionary<string, Data.Dev> dicDevs = new();
             secManDb.GetDevs().ForEach(o => dicDevs.Add(o.Name, o));
             cbDevPermDevs.DataSource = new BindingSource(dicDevs, null);
             cbDevPermDevs.DisplayMember = "Key";
@@ -1417,11 +1417,11 @@ namespace SecMan
             {
                 if (cbDevPermDevs.SelectedItem != null)
                 {
-                    KeyValuePair<string, Dev> kvp = (KeyValuePair<string, Dev>)cbDevPermDevs.SelectedItem;
+                    KeyValuePair<string, Data.Dev> kvp = (KeyValuePair<string, Data.Dev>)cbDevPermDevs.SelectedItem;
 
                     if (kvp.Value != null)
                     {
-                        Dev dev = kvp.Value;
+                        Data.Dev dev = kvp.Value;
                         List<string> userDevPerms = user.GetDevPerms(dev.Id);
 
                         dgvDevPerms.Rows.Clear();
@@ -1450,7 +1450,7 @@ namespace SecMan
         #region SuperUser
         private void RefreshSuperUser()
         {
-            SuperUser? superUser = secManDb.GetSuperUser();
+            Data.SuperUser? superUser = secManDb.GetSuperUser();
             if (superUser != null)
             {
                 txtSuperUserUserName.Text = superUser.GetUserName();
@@ -1460,7 +1460,7 @@ namespace SecMan
 
         private void btnSetSuperUser_Click(object sender, EventArgs e)
         {
-            SuperUser? superUser = secManDb.GetSuperUser();
+            Data.SuperUser? superUser = secManDb.GetSuperUser();
             if (superUser != null)
             {
                 if (superUser.SetUserName(txtSuperUserUserName.Text.Trim()) && superUser.SetPassword(txtSuperUserPassword.Text.Trim()))
@@ -1480,7 +1480,7 @@ namespace SecMan
 
         private void txtSuperUserValidate_Click(object sender, EventArgs e)
         {
-            SuperUser? superUser = secManDb.GetSuperUser();
+            Data.SuperUser? superUser = secManDb.GetSuperUser();
             if ((superUser.GetUserName().ToUpper() == txtSuperUserUserName.Text.Trim().ToUpper()) &&
                 (superUser.GetPassword().ToUpper() == txtSuperUserPassword.Text.Trim().ToUpper()))
             {
@@ -1516,7 +1516,7 @@ namespace SecMan
         private void RefreshZonesRoles()
         {
             int idx = cbZonesRoles.SelectedIndex;
-            Dictionary<string, Data.Role> dic = new();
+            Dictionary<string, Data.RoleData> dic = new();
             secManDb.GetRoles().ForEach(o => dic.Add(o.Name, o));
             cbZonesRoles.DataSource = new BindingSource(dic, null);
             cbZonesRoles.DisplayMember = "Key";
@@ -1530,7 +1530,7 @@ namespace SecMan
             {
                 KeyValuePair<string, Data.Zone> kvp = (KeyValuePair<string, Data.Zone>)cbZonesZones.SelectedItem;
                 Data.Zone zone = kvp.Value;
-                foreach (Dev dev in zone.Devs)
+                foreach (Data.Dev dev in zone.Devs)
                 {
                     int i = dgvZoneAllocatedDevs.Rows.Add();
                     dgvZoneAllocatedDevs.Rows[i].Cells[0].Value = dev.Id;
@@ -1546,7 +1546,7 @@ namespace SecMan
             {
                 KeyValuePair<string, Data.Zone> kvp = (KeyValuePair<string, Data.Zone>)cbZonesZones.SelectedItem;
                 Data.Zone zone = kvp.Value;
-                foreach (Role role in zone.Roles)
+                foreach (RoleData role in zone.Roles)
                 {
                     int i = dgvZoneAllocatedRoles.Rows.Add();
                     dgvZoneAllocatedRoles.Rows[i].Cells[0].Value = role.Id;
@@ -1609,8 +1609,8 @@ namespace SecMan
             {
                 KeyValuePair<string, Data.Zone> kvp1 = (KeyValuePair<string, Data.Zone>)cbZonesZones.SelectedItem;
                 Data.Zone zone = kvp1.Value;
-                KeyValuePair<string, Data.Role> kvp2 = (KeyValuePair<string, Data.Role>)cbZonesRoles.SelectedItem;
-                Data.Role role = kvp2.Value;
+                KeyValuePair<string, Data.RoleData> kvp2 = (KeyValuePair<string, Data.RoleData>)cbZonesRoles.SelectedItem;
+                Data.RoleData role = kvp2.Value;
                 if (zone.AddRole(role.Id))
                 {
                     RefreshAll();
@@ -1630,8 +1630,8 @@ namespace SecMan
             {
                 KeyValuePair<string, Data.Zone> kvp1 = (KeyValuePair<string, Data.Zone>)cbZonesZones.SelectedItem;
                 Data.Zone zone = kvp1.Value;
-                KeyValuePair<string, Data.Role> kvp2 = (KeyValuePair<string, Data.Role>)cbZonesRoles.SelectedItem;
-                Data.Role role = kvp2.Value;
+                KeyValuePair<string, Data.RoleData> kvp2 = (KeyValuePair<string, Data.RoleData>)cbZonesRoles.SelectedItem;
+                Data.RoleData role = kvp2.Value;
                 if (zone.RemRole(role.Id))
                 {
                     RefreshAll();

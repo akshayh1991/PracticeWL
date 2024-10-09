@@ -669,10 +669,10 @@ namespace SecMan.Data
         #endregion
         #region Roles
 
-        public List<Role> GetRoles()
+        public List<RoleData> GetRoles()
         {
             // Get the Roles
-            List<Role> roles = new();
+            List<RoleData> roles = new();
             dbLock.EnterReadLock();
             try
             {
@@ -697,9 +697,9 @@ namespace SecMan.Data
             return roles;
         }
 
-        public Role? AddRole(string name)
+        public RoleData? AddRole(string name)
         {
-            Role? role = null;
+            RoleData? role = null;
             dbLock.EnterWriteLock();
             try
             {

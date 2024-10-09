@@ -7,7 +7,7 @@ using SecMan.Model;
 
 namespace SecMan.Data
 {
-    public class Role : IRoleDAL
+    public class Role : IRoleDal
     {
         SecManDb db = new();
         #region JohnCode
@@ -296,7 +296,7 @@ namespace SecMan.Data
         {
         }
 
-        public async Task<GetRoleDto> AddRoleAsync(AddRoleDto addRoleDto)
+        public async Task<GetRoleDto> AddRoleAsync(CreateRole addRoleDto)
         {
             _logger.LogInformation("Starting to add role. Role Name: {RoleName}", addRoleDto.Name);
 
@@ -345,7 +345,7 @@ namespace SecMan.Data
                     Id = role.Id,
                     Name = role.Name,
                     Description = role.Description,
-                    IsLoggedOutType = role.IsLoggedOutType.ToString(),
+                    IsLoggedOutType = role.IsLoggedOutType,
                     NoOfUsers = addRoleDto.LinkUsers.Count
                 };
 
@@ -380,7 +380,7 @@ namespace SecMan.Data
                         Id = r.Id,
                         Name = r.Name,
                         Description = r.Description,
-                        IsLoggedOutType = r.IsLoggedOutType.ToString(),
+                        IsLoggedOutType = r.IsLoggedOutType,
                         NoOfUsers = r.Users.Count
                     })
                     .ToListAsync();
@@ -425,7 +425,7 @@ namespace SecMan.Data
                     Id = role.Id,
                     Name = role.Name,
                     Description = role.Description,
-                    IsLoggedOutType = role.IsLoggedOutType.ToString(),
+                    IsLoggedOutType = role.IsLoggedOutType,
                     NoOfUsers = role.Users.Count
                 };
 
@@ -444,7 +444,7 @@ namespace SecMan.Data
                 throw new ApplicationException("An unexpected error occurred while retrieving the role by ID.", ex);
             }
         }
-        public async Task<GetRoleDto?> UpdateRoleAsync(ulong id, AddRoleDto addRoleDto)
+        public async Task<GetRoleDto?> UpdateRoleAsync(ulong id, CreateRole addRoleDto)
         {
             _logger.LogInformation("Attempting to update role with ID: {RoleId}", id);
 
@@ -504,7 +504,7 @@ namespace SecMan.Data
                     Id = id,
                     Name = role.Name,
                     Description = role.Description,
-                    IsLoggedOutType = role.IsLoggedOutType.ToString(),
+                    IsLoggedOutType = role.IsLoggedOutType,
                     NoOfUsers = role.Users.Count
                 };
 

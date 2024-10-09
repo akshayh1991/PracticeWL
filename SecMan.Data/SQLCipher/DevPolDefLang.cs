@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SecMan.Data.SQLCipher
 {
-    internal class DevPolDefLang
+    public class DevPolDefLang
     {
         [Key]
         public ulong Id { get; set; }

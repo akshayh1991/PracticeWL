@@ -5,14 +5,10 @@ namespace SecMan.Interfaces.BL
 {
     public interface IUserBL
     {
-        Task<ServiceResponse<UserDto>> AddUserAsync(AddUserDto model);
-
         Task<ServiceResponse<UsersWithCountDto>> GetUsersAsync(UsersFilterDto model);
-
-        Task<ServiceResponse<UserDto>> GetUserByIdAsync(ulong userId);
-
-        Task<ServiceResponse<UserDto>> UpdateUserAsync(AddUserDto model, ulong userId);
-
+        Task<ServiceResponse<User>> AddUserAsync(CreateUser model);
+        Task<ServiceResponse<User>> GetUserByIdAsync(ulong userId);
+        Task<ServiceResponse<User>> UpdateUserAsync(UpdateUser model, ulong userId);
         Task<ApiResponse> DeleteUserAsync(ulong userId);
     }
 

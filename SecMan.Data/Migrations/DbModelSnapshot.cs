@@ -67,6 +67,47 @@ namespace SecMan.Data.Migrations
                     b.ToTable("InitFileTypes");
                 });
 
+            modelBuilder.Entity("SecMan.Data.SQLCipher.APIAudit", b =>
+                {
+                    b.Property<int>("RecordID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("APIDescription")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("APIResponseCode")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ActionBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Component")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EntityName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("RequestedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("ResponseTime")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("ServerIP")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("RecordID");
+
+                    b.ToTable("APIAudits");
+                });
+
             modelBuilder.Entity("SecMan.Data.SQLCipher.Dev", b =>
                 {
                     b.Property<ulong>("Id")
@@ -95,7 +136,6 @@ namespace SecMan.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<ulong>("RoleVer")
@@ -108,7 +148,6 @@ namespace SecMan.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Vers")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<ulong?>("ZoneId")
@@ -265,29 +304,24 @@ namespace SecMan.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Cat")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Desc")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<ulong?>("DevDefId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Posn")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Units")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ValDflt")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<double>("ValMax")
@@ -297,7 +331,6 @@ namespace SecMan.Data.Migrations
                         .HasColumnType("REAL");
 
                     b.Property<string>("ValType")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<ulong>("Vers")
@@ -410,6 +443,48 @@ namespace SecMan.Data.Migrations
                     b.ToTable("DevSigVals");
                 });
 
+            modelBuilder.Entity("SecMan.Data.SQLCipher.LoginLogs", b =>
+                {
+                    b.Property<ulong>("LoginLogId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ActionDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsSuccessfullyLoggedIn")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong?>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("LoginLogId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("LoginLogs");
+                });
+
+            modelBuilder.Entity("SecMan.Data.SQLCipher.PasswordHistory", b =>
+                {
+                    b.Property<int>("EntryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("TEXT");
+
+                    b.Property<ulong>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("EntryId");
+
+                    b.ToTable("PasswordHistories");
+                });
+
             modelBuilder.Entity("SecMan.Data.SQLCipher.Role", b =>
                 {
                     b.Property<ulong>("Id")
@@ -520,7 +595,6 @@ namespace SecMan.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ValType")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<ulong>("Vers")
@@ -594,6 +668,9 @@ namespace SecMan.Data.Migrations
                     b.Property<DateTime>("EnabledDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("FirstLogin")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("FirstName")
                         .HasColumnType("TEXT");
 
@@ -631,7 +708,6 @@ namespace SecMan.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LockedReason")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
@@ -655,6 +731,12 @@ namespace SecMan.Data.Migrations
                     b.Property<bool>("ResetPassword")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ResetPasswordToken")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ResetPasswordTokenExpiry")
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("Retired")
                         .HasColumnType("INTEGER");
 
@@ -665,7 +747,6 @@ namespace SecMan.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SessionId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserName")
@@ -843,6 +924,15 @@ namespace SecMan.Data.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("Zone");
+                });
+
+            modelBuilder.Entity("SecMan.Data.SQLCipher.LoginLogs", b =>
+                {
+                    b.HasOne("SecMan.Data.SQLCipher.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SecMan.Data.SQLCipher.SysFeatLang", b =>

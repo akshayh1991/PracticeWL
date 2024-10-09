@@ -5,11 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SecMan.Data.Exceptions
-{
-    public class RoleBasedExceptions
-    {
-    }
-
+{    
     public class CommonBadRequestForRole : Exception
     {
         public CommonBadRequestForRole(string message) : base(message)

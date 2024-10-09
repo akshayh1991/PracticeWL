@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecMan.BL", "SecMan.BL\SecM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserAccessManagement", "UserAccessManagement\UserAccessManagement.csproj", "{41373484-B7E4-475E-923E-DBDB578B45BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecMan.UnitTests", "SecMan.UnitTests\SecMan.UnitTests.csproj", "{DBF58C12-8EEB-453B-8D87-63C6116B74BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecMan.UnitTests", "SecMan.UnitTests\SecMan.UnitTests.csproj", "{9D5816DB-EC2F-487F-85EB-EF02D37797AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,10 +47,10 @@ Global
 		{41373484-B7E4-475E-923E-DBDB578B45BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41373484-B7E4-475E-923E-DBDB578B45BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41373484-B7E4-475E-923E-DBDB578B45BD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DBF58C12-8EEB-453B-8D87-63C6116B74BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DBF58C12-8EEB-453B-8D87-63C6116B74BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DBF58C12-8EEB-453B-8D87-63C6116B74BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DBF58C12-8EEB-453B-8D87-63C6116B74BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D5816DB-EC2F-487F-85EB-EF02D37797AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D5816DB-EC2F-487F-85EB-EF02D37797AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D5816DB-EC2F-487F-85EB-EF02D37797AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D5816DB-EC2F-487F-85EB-EF02D37797AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

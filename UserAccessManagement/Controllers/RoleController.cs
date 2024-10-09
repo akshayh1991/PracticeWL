@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SecMan.Data.Exceptions;
 using SecMan.Interfaces.BL;
 using SecMan.Model;
+using Serilog;
+using UserAccessManagement.Filters;
 
 namespace UserAccessManagement.Controllers
 {
@@ -10,6 +13,8 @@ namespace UserAccessManagement.Controllers
     /// </summary>
     [Route("roles")]
     [ApiController]
+    [Authorize]
+    [TypeFilter(typeof(SecurityActionFilter), Arguments = ["CAN_EDIT_SECURITY"])]
     public class RoleController : ControllerBase
     {
         private readonly IRoleBL _roleBAL; // Business logic layer for roles
@@ -32,7 +37,7 @@ namespace UserAccessManagement.Controllers
         /// <param name="dto">Data transfer object containing role details.</param>
         /// <returns>Action result indicating the outcome of the creation.</returns>
         [HttpPost]
-        public async Task<IActionResult> AddRole([FromBody] AddRoleDto dto)
+        public async Task<IActionResult> AddRole([FromBody] CreateRole dto)
         {
             _logger.LogInformation("AddRole method called with request: {@Request}", dto);
 
@@ -75,6 +80,8 @@ namespace UserAccessManagement.Controllers
             try
             {
                 var roles = await _roleBAL.GetAllRolesAsync();
+
+
                 return Ok(roles);
             }
             catch (Exception ex)
@@ -122,7 +129,7 @@ namespace UserAccessManagement.Controllers
         /// <param name="addRoleDto">Data transfer object containing updated role details.</param>
         /// <returns>Action result indicating the outcome of the update.</returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateRole(ulong id, [FromBody] AddRoleDto addRoleDto)
+        public async Task<IActionResult> UpdateRole(ulong id, [FromBody] CreateRole addRoleDto)
         {
             _logger.LogInformation("UpdateRole method called with ID: {Id} and request: {@Request}", id, addRoleDto);
 

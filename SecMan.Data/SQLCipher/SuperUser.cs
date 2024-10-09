@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SecMan.Data.SQLCipher
 {
-    internal class SuperUser
+    public class SuperUser
     {
         private enum Property
         {
